@@ -1,10 +1,6 @@
 package com.moviles.paninisupport.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -15,10 +11,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.moviles.paninisupport.ui.screens.create.CreateTicketScreen
 import com.moviles.paninisupport.ui.screens.detail.TicketDetailScreen
+import com.moviles.paninisupport.ui.screens.featureflags.FeatureFlagsScreen
 import com.moviles.paninisupport.ui.screens.login.LoginScreen
 import com.moviles.paninisupport.ui.screens.tickets.TicketListScreen
-import com.moviles.paninisupport.ui.theme.AppBackground
-import com.moviles.paninisupport.util.FeatureFlags
 
 @Composable
 fun AppNavHost() {
@@ -42,17 +37,22 @@ fun AppNavHost() {
         }
 
         composable(route = AppDestinations.TICKET_LIST) {
-            val showFab = FeatureFlags.isEnabled(FeatureFlags.ENABLE_TICKET_CREATION)
-
             TicketListScreen(
                 onTicketClick = { ticketId ->
                     navController.navigate(AppDestinations.ticketDetailRoute(ticketId))
                 },
                 onCreateClick = {
-                    if (showFab) {
-                        navController.navigate(AppDestinations.CREATE_TICKET)
-                    }
+                    navController.navigate(AppDestinations.CREATE_TICKET)
+                },
+                onSettingsClick = {
+                    navController.navigate(AppDestinations.SETTINGS)
                 }
+            )
+        }
+
+        composable(route = AppDestinations.SETTINGS) {
+            FeatureFlagsScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
 
