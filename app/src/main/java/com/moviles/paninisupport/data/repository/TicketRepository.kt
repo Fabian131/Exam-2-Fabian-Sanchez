@@ -56,10 +56,10 @@ object TicketRepository {
 
     private fun priorityOrder(priority: Priority): Int {
         return when (priority) {
-            Priority.CRITICAL -> 0
-            Priority.HIGH -> 1
+            Priority.CRITICAL -> 4
+            Priority.HIGH -> 3
             Priority.MEDIUM -> 2
-            Priority.LOW -> 3
+            Priority.LOW -> 1
         }
     }
 }

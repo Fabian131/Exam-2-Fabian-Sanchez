@@ -1,8 +1,10 @@
 package com.moviles.paninisupport.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,11 +22,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.moviles.paninisupport.data.remote.dto.Priority
 import com.moviles.paninisupport.data.remote.dto.TicketResponse
 import com.moviles.paninisupport.ui.theme.AppBorder
 import com.moviles.paninisupport.ui.theme.AppIconTint
 import com.moviles.paninisupport.ui.theme.AppSecondaryText
+import com.moviles.paninisupport.ui.theme.PriorityCritical
+import com.moviles.paninisupport.ui.theme.PriorityHigh
+import com.moviles.paninisupport.ui.theme.PriorityLow
+import com.moviles.paninisupport.ui.theme.PriorityMedium
 
 @Composable
 fun TicketCard(
@@ -33,6 +41,13 @@ fun TicketCard(
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val priorityColor = when (ticket.priority) {
+        Priority.CRITICAL -> PriorityCritical
+        Priority.HIGH -> PriorityHigh
+        Priority.MEDIUM -> PriorityMedium
+        Priority.LOW -> PriorityLow
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -72,11 +87,20 @@ fun TicketCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = ticket.priority.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = AppSecondaryText
-                )
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = priorityColor,
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        text = ticket.priority.name,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.White
+                    )
+                }
                 Text(
                     text = "•",
                     color = AppSecondaryText
