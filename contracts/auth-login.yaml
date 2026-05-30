@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: Auth Login API
+  version: 1.0.0
+
+paths:
+  /api/auth/login:
+    post:
+      summary: Login
+      description: Validates credentials against stored users.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "admin@gmail.com"
+        password:
+          type: string
+          example: "Admin1234#"
+
+    LoginResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

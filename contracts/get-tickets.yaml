@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: Get Tickets API
+  version: 1.0.0
+
+paths:
+  /api/tickets:
+    get:
+      summary: List all tickets
+      description: Returns all support tickets ordered by priority (CRITICAL first).
+      responses:
+        '200':
+          description: List of tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketResponse'
+
+components:
+  schemas:
+    TicketResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        providerName:
+          type: string
+        category:
+          type: string
+          enum:
+            - INVENTORY
+            - DISTRIBUTION
+            - SUPPLIER
+            - DAMAGED_PRODUCT
+            - DELIVERY_DELAY
+            - OTHER
+        priority:
+          type: string
+          enum:
+            - LOW
+            - MEDIUM
+            - HIGH
+            - CRITICAL
+        status:
+          type: string
+          enum:
+            - OPEN
+            - IN_PROGRESS
+            - RESOLVED
+            - CLOSED
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reportedBy:
+          type: string
+        location:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

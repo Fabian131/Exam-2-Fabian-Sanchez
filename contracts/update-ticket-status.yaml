@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: Update Ticket Status API
+  version: 1.0.0
+
+paths:
+  /api/tickets/{ticketId}/status:
+    patch:
+      summary: Update ticket status
+      description: Updates the status of an existing ticket.
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStatusRequest'
+      responses:
+        '200':
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    UpdateStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - OPEN
+            - IN_PROGRESS
+            - RESOLVED
+            - CLOSED
+
+    TicketResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        providerName:
+          type: string
+        category:
+          type: string
+        priority:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reportedBy:
+          type: string
+        location:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

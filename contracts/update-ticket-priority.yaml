@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: Update Ticket Priority API
+  version: 1.0.0
+
+paths:
+  /api/tickets/{ticketId}/priority:
+    patch:
+      summary: Update ticket priority
+      description: Updates the priority of an existing ticket.
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePriorityRequest'
+      responses:
+        '200':
+          description: Priority updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    UpdatePriorityRequest:
+      type: object
+      required:
+        - priority
+      properties:
+        priority:
+          type: string
+          enum:
+            - LOW
+            - MEDIUM
+            - HIGH
+            - CRITICAL
+
+    TicketResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        providerName:
+          type: string
+        category:
+          type: string
+        priority:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reportedBy:
+          type: string
+        location:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

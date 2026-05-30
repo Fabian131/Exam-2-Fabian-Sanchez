@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Create Ticket API
+  version: 1.0.0
+
+paths:
+  /api/tickets:
+    post:
+      summary: Create a new ticket
+      description: Creates a new support ticket with the provided information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+      responses:
+        '201':
+          description: Ticket created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CreateTicketRequest:
+      type: object
+      required:
+        - title
+        - description
+        - priority
+        - category
+        - providerName
+        - reportedBy
+        - location
+      properties:
+        title:
+          type: string
+          example: "Missing packages in regional batch"
+        description:
+          type: string
+          example: "Point of sale reports 120 packages less than confirmed dispatch."
+        priority:
+          type: string
+          enum:
+            - LOW
+            - MEDIUM
+            - HIGH
+            - CRITICAL
+        category:
+          type: string
+          enum:
+            - INVENTORY
+            - DISTRIBUTION
+            - SUPPLIER
+            - DAMAGED_PRODUCT
+            - DELIVERY_DELAY
+            - OTHER
+        providerName:
+          type: string
+          example: "Distribuidora La Sabana"
+        reportedBy:
+          type: string
+          example: "Carlos Mendoza"
+        location:
+          type: string
+          example: "San Jose, GAM"
+
+    TicketResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        providerName:
+          type: string
+        category:
+          type: string
+        priority:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reportedBy:
+          type: string
+        location:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
